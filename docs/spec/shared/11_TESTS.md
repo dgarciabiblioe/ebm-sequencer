@@ -199,6 +199,20 @@ This is a review trigger, not an automatic musical failure.
 
 Extreme corners may be higher but must be visible.
 
+Telemetry por run:
+
+```text
+candidateAttempts
+retriesUsed
+usedFallback
+fallbackReason
+```
+
+La telemetría agregada se deriva de runs sin acumulador global. `retryHistogram`
+tiene 33 posiciones (`0..32`), indexadas por `retriesUsed`. Para una colección
+vacía: `runCount = 0`, `fallbackCount = 0`, `fallbackRate = 0` y todo el
+histogram es cero.
+
 ---
 
 # 7. Candidate retry
@@ -216,6 +230,10 @@ max retries
 ```
 
 No fallback through relaxed hard validators.
+
+Esto significa 32 retries después del intento inicial: se producen como máximo
+33 candidatos, numerados `1..33`. Si se agotan, el fallback se valida con los
+mismos validators y un fallback inválido es un error de configuración.
 
 ---
 

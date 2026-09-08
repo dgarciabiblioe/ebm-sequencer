@@ -369,6 +369,37 @@ first failure wins
 
 Debug puede recopilar todos.
 
+### Candidate validation, retry and fallback
+
+Un candidato del core es el valor genérico `T`; no añade metadata.
+
+```ts
+export type ValidationResult =
+  | { readonly status: "valid" }
+  | { readonly status: "invalid"; readonly reason: string };
+
+export type Validator<T> = (candidate: T) => ValidationResult;
+export type CandidateProducer<T> = (attemptNumber: number) => T;
+export type FallbackProducer<T> = () => T;
+```
+
+Los validators se ejecutan en orden: **first failure wins**.
+
+```text
+MAX_CANDIDATE_RETRIES = 32
+```
+
+Son 32 retries después del intento inicial: `attemptNumber` cubre `1..33` y
+el fallback no cuenta como candidate attempt. Tras agotar los 33 candidatos,
+el caller proporciona un fallback que debe atravesar exactamente los mismos
+validators. Un fallback inválido es un error; nunca se relajan hard validators.
+
+El único motivo de fallback v0.1 es:
+
+```text
+candidate-retries-exhausted
+```
+
 ---
 
 ## 12. Transformations

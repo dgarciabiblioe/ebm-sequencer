@@ -28,5 +28,5 @@ export interface ScaleDegreePitchIntent {
 export interface ChromaticApproachPitchIntent {
   readonly kind: "CHROMATIC_APPROACH";
   readonly target: StablePitchTarget;
-  readonly direction: "BELOW" | "ABOVE";
+  readonly direction: "below" | "above";
 }

@@ -30,7 +30,7 @@ export type PitchIntent =
   | {
       readonly kind: "CHROMATIC_APPROACH";
       readonly target: StablePitchTarget;
-      readonly direction: "BELOW" | "ABOVE";
+      readonly direction: "below" | "above";
     };
 ```
 
@@ -67,6 +67,61 @@ Range fitting:
 ```
 
 No hard clamp.
+
+### PITCH-00 contracts
+
+`ResolvedPitch` is a `MidiNote`: a finite integer in the inclusive MIDI range
+`0..127`. `PitchContext` contains only:
+
+```ts
+export interface PitchContext {
+  readonly rootMidi: MidiNote;
+  readonly scale: ScaleId;
+}
+
+export type OctaveOffset = -1 | 0 | 1;
+```
+
+`rootMidi` is an absolute MIDI note; its pitch class is `rootMidi % 12`.
+
+Built-in `ScaleId` definitions use ascending, unique semitone intervals from
+ROOT, beginning at `0`:
+
+```text
+CHROMATIC        0 1 2 3 4 5 6 7 8 9 10 11
+MAJOR            0 2 4 5 7 9 11
+NATURAL_MINOR    0 2 3 5 7 8 10
+DORIAN           0 2 3 5 7 9 10
+PHRYGIAN         0 1 3 5 7 8 10
+MIXOLYDIAN       0 2 4 5 7 9 10
+HARMONIC_MINOR   0 2 3 5 7 8 11
+MINOR_PENTATONIC 0 3 5 7 10
+```
+
+Degrees are one-based: `SCALE_DEGREE_3` resolves to `intervals[2]`. Stable
+target intervals are ROOT `0`, PERFECT_FIFTH `7`, and SCALE_DEGREE_3 from the
+active scale. Apply `octaveOffset * 12` after the stable target is resolved.
+
+The resulting raw pitch uses one range-fitting correction only: add `12` when
+it is below `0`, subtract `12` when it is above `127`, then reject it if still
+outside `0..127`. No clamp, wrapping, or repeated fitting is allowed.
+
+### PITCH-01 chromatic approach
+
+`CHROMATIC_APPROACH` is an explicit one-semitone approach to a stable target:
+
+```ts
+{
+  readonly kind: "CHROMATIC_APPROACH";
+  readonly target: StablePitchTarget;
+  readonly direction: "below" | "above";
+}
+```
+
+Its resolution order is stable target, `octaveOffset`, chromatic displacement
+(`below = -1`, `above = +1`), then the final single `±12` range fitting. It has
+no temporal, previous-note, next-note, random, or probability semantics in
+shared PITCH.
 
 ---
 
