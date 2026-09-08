@@ -29,7 +29,7 @@
           "numoutlets": 1,
           "outlettype": [""],
           "patching_rect": [30.0, 80.0, 168.0, 22.0],
-          "text": "v8 ../js/spike/spike-v8.js"
+          "text": "js spike-js.js"
         }
       },
       {
@@ -46,7 +46,7 @@
         "box": {
           "id": "obj-4",
           "maxclass": "comment",
-          "text": "Click the button; inspect the Max Console for the three PASS lines.",
+          "text": "Reload for SCRIPT_LOADED PASS; click for JS_RUNTIME, BANG_HANDLER and DICT_ROUNDTRIP PASS.",
           "patching_rect": [75.0, 31.0, 405.0, 20.0]
         }
       }

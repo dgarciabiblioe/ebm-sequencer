@@ -13,21 +13,38 @@ TypeScript
 Runtime build:
 
 ```text
-single CommonJS JS bundle
+single bundled JavaScript file compatible with the classic Max JS runtime
 ```
 
 Max object:
 
 ```text
-[v8]
+[js]
 ```
 
 Do not use as primary runtime:
 
 ```text
-legacy [js]
+v8
 node.script
 ```
+
+Runtime architecture:
+
+```text
+TypeScript source
+→ bundled JS compatible with [js]
+→ [js] Max adapter
+→ Max-native playback
+```
+
+Development source may be modular/CommonJS, but the runtime adapter must not
+require Max to resolve CommonJS modules.
+
+Runtime JavaScript artifacts must not depend on `../` relative paths. During
+development and spikes, place them where Max can resolve them directly; final
+devices will include them through the packaging/freezing mechanism validated
+later.
 
 v0.1 runtime dependencies:
 
@@ -253,7 +270,7 @@ Frozen device must include:
 
 ```text
 core bundle
-v8 adapter
+js adapter
 UI JS
 painters
 patchers
@@ -280,7 +297,7 @@ core/
 ## Spike tasks
 
 ```text
-MAX-SPIKE-00 v8/CommonJS/Dict
+MAX-SPIKE-00 js/Dict
 MAX-SPIKE-01 deterministic compiled function
 MAX-SPIKE-02 Live clock + raw tick step
 MAX-SPIKE-03 static table → MIDI
@@ -298,8 +315,8 @@ Do not connect full ELECTRONIC until these pass.
 ## Acceptance
 
 ```text
-V8_RUNTIME
-COMMONJS_BUNDLE
+JS_RUNTIME
+BUNDLED_JS_COMPAT
 DETERMINISM
 LIVE_CLOCK_SYNC
 PLAYHEAD_JUMPS
