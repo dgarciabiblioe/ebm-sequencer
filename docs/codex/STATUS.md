@@ -1,9 +1,9 @@
 # DEVELOPMENT STATUS
 
 ```text
-phase: MAX-SPIKE
-last_completed: MAX-SPIKE-01
-next_task: MAX-SPIKE-02
+phase: CORE
+last_completed: MAX-SPIKE-04
+next_task: CORE-00
 engine_implementation: not_started
 ```
 
