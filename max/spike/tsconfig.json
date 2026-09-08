@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "module": "none",
+    "outFile": "./max-spike-01.js",
+    "removeComments": false,
+    "strict": true
+  },
+  "files": [
+    "src/deterministic-probe.ts",
+    "src/max-spike-01-adapter.ts"
+  ]
+}

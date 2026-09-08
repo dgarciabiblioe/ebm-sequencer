@@ -1,4 +1,4 @@
-# MAX-SPIKE-00 — v8 runtime
+# MAX-SPIKE-01 — compiled deterministic function
 
 ## Read
 ```text
@@ -6,14 +6,12 @@ docs/spec/shared/10_MAX.md
 ```
 
 ## Objective
-Create the smallest isolated Max for Live compatibility spike proving that `v8`
-can load a local CommonJS JavaScript module and exchange structured data through
-a Max `Dict`.
+Create an isolated Max for Live spike proving that TypeScript compiles into one
+ES5-compatible JavaScript artifact loadable by `[js]`.
 
 ## Scope
 ```text
 max/spike/
-max/js/spike/
 ```
 
 Create those directories if needed.
@@ -21,34 +19,32 @@ Create those directories if needed.
 ## Requirements
 ```text
 - no engine code
-- no TypeScript project bootstrap
-- no node.script
-- no LiveAPI
-- one v8 object
-- one local CommonJS module
-- one Dict round-trip
-- concise PASS/FAIL output
+- pure deterministic TypeScript function
+- thin Max adapter TypeScript file
+- one generated JavaScript runtime artifact
+- one `[js]` object
+- no node.script or LiveAPI
 ```
 
 ## Do not
 ```text
 - build ELECTRONIC/BODY/MACHINE
-- implement UI
-- implement MIDI clock
-- add npm dependencies
+- implement UI or MIDI clock
+- add runtime dependencies
 ```
 
 ## Verification
 Manual inside the user's actual Max for Live installation:
 
 ```text
-V8_OBJECT       PASS
-COMMONJS_REQUIRE PASS
-DICT_ROUNDTRIP   PASS
+COMPILED_FUNCTION PASS
+DETERMINISM       PASS
+FIXTURE           PASS
 ```
 
 ## Acceptance
-All three checks pass with no external runtime dependency.
+The fixture `nextProbe(123456789)` must produce `920370032` and outlet that
+value. Manual validation in Max remains required before closure.
 
 ## Return only
 ```text
