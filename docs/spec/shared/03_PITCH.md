@@ -9,21 +9,32 @@ Estado: **CANONICAL**
 `OCTAVE` NO es harmonic role.
 
 ```ts
+export type StablePitchTarget =
+  | "ROOT"
+  | "PERFECT_FIFTH"
+  | "SCALE_DEGREE_3";
+```
+
+`StablePitchTarget` contains only the stable harmonic targets used by
+`CHROMATIC_APPROACH`. It does not include `OCTAVE`, `CHROMATIC`, or any other
+scale degree. Register remains an independent `octaveOffset` dimension.
+
+```ts
 export type PitchIntent =
-  | { readonly kind: "ROOT"; readonly octaveOffset: number }
-  | { readonly kind: "PERFECT_FIFTH"; readonly octaveOffset: number }
+  | { readonly kind: "ROOT" }
+  | { readonly kind: "PERFECT_FIFTH" }
   | {
       readonly kind: "SCALE_DEGREE";
       readonly degree: number;
-      readonly octaveOffset: number;
     }
   | {
       readonly kind: "CHROMATIC_APPROACH";
       readonly target: StablePitchTarget;
       readonly direction: "BELOW" | "ABOVE";
-      readonly octaveOffset: number;
     };
 ```
+
+`octaveOffset` belongs to `NoteStep`, independently of `PitchIntent`.
 
 Toda documentación/implementación antigua de:
 

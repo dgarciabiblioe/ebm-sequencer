@@ -2,8 +2,8 @@
 
 ```text
 phase: CORE
-last_completed: MAX-SPIKE-04
-next_task: CORE-00
+last_completed: CORE-00
+next_task: CORE-01
 engine_implementation: not_started
 ```
 

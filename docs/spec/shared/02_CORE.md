@@ -42,6 +42,8 @@ utils.ts / helpers.ts
 No asumir capacidades iguales.
 
 ```ts
+export type EngineId = "electronic" | "body" | "machine";
+
 export interface EngineCapabilities {
   readonly allowedLengths: readonly PatternLength[];
   readonly scaleRelevant: boolean;
@@ -87,20 +89,21 @@ export type Step =
 
 export interface NoteStep {
   readonly index: number;
-  readonly state: "NOTE";
-  readonly pitch: PitchIntent;
+  readonly kind: "NOTE";
+  readonly pitchIntent: PitchIntent;
+  readonly octaveOffset: number;
   readonly locked: boolean;
 }
 
 export interface RestStep {
   readonly index: number;
-  readonly state: "REST";
+  readonly kind: "REST";
   readonly locked: boolean;
 }
 
 export interface TieStep {
   readonly index: number;
-  readonly state: "TIE";
+  readonly kind: "TIE";
   readonly locked: boolean;
 }
 ```
@@ -117,8 +120,11 @@ TIE + pitch
 ## 4. Pattern
 
 ```ts
-export interface Pattern {
+export interface PatternMetadata {
   readonly engineId: EngineId;
+}
+
+export interface Pattern {
   readonly length: PatternLength;
   readonly resolution: "1/16";
   readonly seed: number;
