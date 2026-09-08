@@ -1,4 +1,4 @@
-# MAX-SPIKE-01 — compiled deterministic function
+# MAX-SPIKE-02 — Live clock and transport phase
 
 ## Read
 ```text
@@ -6,45 +6,48 @@ docs/spec/shared/10_MAX.md
 ```
 
 ## Objective
-Create an isolated Max for Live spike proving that TypeScript compiles into one
-ES5-compatible JavaScript artifact loadable by `[js]`.
+Prove in Max for Live that a native tempo-relative sixteenth clock derives the
+step index from Live's real transport position, not from an autonomous counter.
 
 ## Scope
 ```text
-max/spike/
+max/spike/max-spike-02.maxpat
+max/spike/max-spike-02-manual-setup.md
 ```
 
 Create those directories if needed.
 
 ## Requirements
 ```text
-- no engine code
-- pure deterministic TypeScript function
-- thin Max adapter TypeScript file
-- one generated JavaScript runtime artifact
-- one `[js]` object
-- no node.script or LiveAPI
+- native `[transport]` bound to Live
+- native `[metro 16n @quantize 16n]`
+- raw ticks → floor(rawTicks / 120) → (globalSixteenth % 16) + 1
+- visible transport state, raw ticks, global sixteenth and step index
+- no JavaScript in the clock path
+- run the patch through a manually saved Max MIDI Effect harness
 ```
 
 ## Do not
 ```text
 - build ELECTRONIC/BODY/MACHINE
-- implement UI or MIDI clock
-- add runtime dependencies
+- implement MIDI output, UI, state or buffers
+- use JavaScript, node.script or LiveAPI as a clock
+- use an autonomous counter as the step source
 ```
 
 ## Verification
 Manual inside the user's actual Max for Live installation:
 
 ```text
-COMPILED_FUNCTION PASS
-DETERMINISM       PASS
-FIXTURE           PASS
+LIVE_CLOCK PASS
+TRANSPORT_POSITION PASS
+STEP_INDEX PASS
+PLAYHEAD_RESYNC PASS
 ```
 
 ## Acceptance
-The fixture `nextProbe(123456789)` must produce `920370032` and outlet that
-value. Manual validation in Max remains required before closure.
+Test stop/start, playhead jumps, loops, opening during playback, and 90, 120,
+137 and 160 BPM. Manual validation in Max remains required before closure.
 
 ## Return only
 ```text

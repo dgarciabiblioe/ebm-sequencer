@@ -91,6 +91,14 @@ active playback buffer
 
 Do not use a free-running counter as sole source because playhead can jump.
 
+## Live transport spike harness
+
+Spikes that depend on Live transport must run inside a real Max for Live device.
+A standalone `.maxpat` uses Max's transport context and cannot certify Live
+transport synchronization. During development, keep the spike patch and its
+manually saved `.amxd` harness co-located so Max resolves the spike directly.
+Final inclusion remains subject to the packaging/freezing spike.
+
 ## Device type
 
 ```text
